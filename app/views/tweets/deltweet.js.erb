@@ -1,0 +1,6 @@
+<% if @message%>
+ noty({text: "Tweet was Successfully destroyed", type: 'error'});
+ $('#destroy_<%= @tweet_id%>').parent().css("display","none");
+<%else%>
+console.log("well tried slugger");
+<%end%>

@@ -1,0 +1,37 @@
+<div class="tweet">
+	<div class="left">
+		<div class="userImage">
+			
+<% if tweet.user.profile_picture %>
+	<img src="/uploads/<%=tweet.user.profile_picture %>">
+<% end %>
+
+		</div>
+	</div>
+
+
+	<div class="right">
+		<div class="userDetail">
+			<%= tweet.user.email %>
+		</div>
+		<div class="content">
+			<%= tweet.content %>
+		</div>
+		<div class="actions"> 
+		<%= link_to tweet.like_string(current_user.id), url_for(controller: 'likes', action: 'toggle_like', tweet_id: tweet.id), method: :post,id: "like_#{tweet.id}" ,remote: true %> , <li id=<%="likes_count_#{tweet.id}"%>><%= tweet.likes.count %></li> 
+		</div>
+		<% current_reaction = Reaction.where(user_id: current_user.id,tweet_id: tweet.id).first %>
+		<div style="display: flex;justify-content: space-around;width:100px; ">
+		<div class="<%=current_reaction && current_reaction.getReaction("sad")%>">
+		<%= link_to "SAD", url_for(controller: 'reactions' , action:'react', tweet_id: tweet.id,id_type: "sad") , method: :post, id: "react_sad_#{tweet.id}",remote: true%></div>
+		<div class="<%=current_reaction && current_reaction.getReaction("happy")%>">
+		<%= link_to "HAPPY", url_for(controller: 'reactions' , action:'react', tweet_id: tweet.id,id_type: "happy") , method: :post, id: "react_happy_#{tweet.id}", remote: true%></div>
+		<div class="<%=current_reaction && current_reaction.getReaction("angry")%>">
+		<%= link_to "ANGRY", url_for(controller: 'reactions' , action:'react', tweet_id: tweet.id,id_type: "angry") , method: :post, id: "react_angry_#{tweet.id}" ,remote: true%></div>
+		</div>
+	</div>
+	<% if tweet.user_id == current_user.id %>
+	<%= link_to 'X', url_for(controller: 'tweets', action: 'deltweet', tweet_id: tweet.id), method: :post,id: "destroy_#{tweet.id}",remote: true %>
+	<%end%>
+</div>
+
